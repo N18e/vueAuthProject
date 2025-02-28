@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
-import { fileURLToPath } from 'url'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueDevTools from 'vite-plugin-vue-devtools';
+import path from 'path';
 
 export default defineConfig({
   plugins: [
@@ -10,11 +10,19 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': path.resolve(__dirname, 'src') // Настраиваем алиас '@' для удобного импорта
     }
   },
   server: {
-    port: 5173, // Фіксуємо порт
-    strictPort: true // Забороняємо зміну порту, якщо 5173 зайнятий
+    port: 5173,       // Фиксируем порт
+    strictPort: true,  // Запрещаем смену порта, если 5173 занят
+    open: true,       // Автоматически открываем браузер при запуске сервера
+    cors: true,       // Разрешаем CORS для API-запросов
+  },
+  build: {
+    outDir: 'dist',          // Папка для сборки проекта
+    assetsDir: 'assets',      // Папка для статических файлов
+    sourcemap: true,          // Включаем sourcemaps для отладки
+    chunkSizeWarningLimit: 500 // Увеличиваем лимит для больших чанков
   }
-})
+});
